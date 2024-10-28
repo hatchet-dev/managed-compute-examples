@@ -17,7 +17,8 @@ RUN apt-get update && \
 WORKDIR /app
 
 # Copy pyproject.toml and poetry.lock first for better caching
-COPY pyproject.toml poetry.lock* /app/
+COPY pyproject.toml /app/
+# COPY pyproject.toml poetry.lock* /app/
 
 # Install project dependencies
 RUN poetry config virtualenvs.create false && \
