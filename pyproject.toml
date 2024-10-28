@@ -7,7 +7,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-hatchet-sdk = {version = "^0.40.0a1", allow-prereleases = true}
+hatchet-sdk = {version = "0.40.0a3", allow-prereleases = true}
 
 
 [tool.poetry.group.dev.dependencies]
