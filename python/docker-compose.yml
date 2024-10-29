@@ -5,10 +5,4 @@ services:
     build: .
     container_name: simple_app
     restart: unless-stopped
-    # environment:
-    #   # Add your environment variables here if needed
-    #   # Example:
-    #   # - ENV_VAR=value
-    volumes:
-      - .:/app
     command: poetry run simple
