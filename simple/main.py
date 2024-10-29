@@ -14,6 +14,7 @@ hatchet = Hatchet()
 # Default compute
 
 default_compute = Compute(cpu_kind="shared", cpus=2, memory_mb=1024, num_replicas=2, regions=["ewr"])
+basic = Compute(cpu_kind="shared", cpus=1, memory_mb=512, num_replicas=1, regions=["ewr"])
 
 @hatchet.workflow(on_events=["user:create"])
 class ManagedWorkflow:
@@ -24,6 +25,14 @@ class ManagedWorkflow:
         # raise Exception("test")
         return {
             "step1": "step1",
+        }
+    
+    @hatchet.step(timeout="11s", retries=3, compute=basic)
+    def step2(self, context: Context):
+        print("executed step2")
+        time.sleep(10)
+        return {
+            "step2": "step2",
         }
 
 def main():
