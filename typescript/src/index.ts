@@ -18,6 +18,7 @@ const twoCpuWorkerConfig: GPUCompute = {
   memoryMb: 1024,
   numReplicas: 1,
   cpus: 2,
+  gpus: 1,
   regions: [ManagedWorkerRegion.Ewr],
 };
 
