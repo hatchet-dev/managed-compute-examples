@@ -1,6 +1,6 @@
 import Hatchet, { Workflow } from "@hatchet-dev/typescript-sdk";
 import { ManagedWorkerRegion } from "@hatchet-dev/typescript-sdk/clients/rest/generated/cloud/data-contracts";
-import { SharedCPUCompute } from "@hatchet-dev/typescript-sdk/clients/worker/compute/compute-config";
+import { GPUCompute, SharedCPUCompute } from "@hatchet-dev/typescript-sdk/clients/worker/compute/compute-config";
 
 const hatchet = Hatchet.init();
 
@@ -12,8 +12,9 @@ const oneCpuWorkerConfig: SharedCPUCompute = {
   regions: [ManagedWorkerRegion.Ewr],
 };
 
-const twoCpuWorkerConfig: SharedCPUCompute = {
+const twoCpuWorkerConfig: GPUCompute = {
   cpuKind: 'shared',
+  gpuKind: 'l40s',
   memoryMb: 1024,
   numReplicas: 1,
   cpus: 2,
