@@ -27,7 +27,7 @@ COPY package.json ./
 COPY --from=build /app/dist ./dist
 
 # Install only production dependencies
-RUN npm install --only=production
+RUN npm install --omit=dev
 
 # Define the command to run the application
 CMD ["node", "dist/index.js"] 
