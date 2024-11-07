@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/joho/godotenv"
-
 	"github.com/hatchet-dev/hatchet/pkg/client"
 	"github.com/hatchet-dev/hatchet/pkg/client/compute"
 	"github.com/hatchet-dev/hatchet/pkg/cmdutils"
@@ -23,10 +21,6 @@ type stepOneOutput struct {
 }
 
 func main() {
-	err := godotenv.Load()
-	if err != nil {
-		panic(err)
-	}
 
 	events := make(chan string, 50)
 	interrupt := cmdutils.InterruptChan()
