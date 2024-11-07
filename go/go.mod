@@ -2,10 +2,7 @@ module example.com/m/v2
 
 go 1.22.1
 
-require (
-	github.com/hatchet-dev/hatchet v0.51.2-0.20241107222935-bd3062c77437
-	github.com/joho/godotenv v1.5.1
-)
+require github.com/hatchet-dev/hatchet v0.51.2-0.20241107225710-4c122159eb67
 
 require (
 	cel.dev/expr v0.18.0 // indirect
