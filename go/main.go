@@ -5,7 +5,6 @@ import (
 	"log"
 
 	"github.com/hatchet-dev/hatchet/pkg/client"
-	"github.com/hatchet-dev/hatchet/pkg/client/compute"
 	"github.com/hatchet-dev/hatchet/pkg/cmdutils"
 	"github.com/hatchet-dev/hatchet/pkg/worker"
 )
@@ -53,30 +52,10 @@ func run(events chan<- string) (func() error, error) {
 		return nil, fmt.Errorf("error creating worker: %w", err)
 	}
 
-	pool := "test-pool"
-	basicCompute := compute.Compute{
-		Pool:        &pool,
-		NumReplicas: 1,
-		CPUs:        1,
-		MemoryMB:    1024,
-		CPUKind:     compute.ComputeKindSharedCPU,
-		Regions:     []compute.Region{compute.Region("ewr")},
-	}
-
-	performancePool := "performance-pool"
-	performanceCompute := compute.Compute{
-		Pool:        &performancePool,
-		NumReplicas: 1,
-		CPUs:        2,
-		MemoryMB:    1024,
-		CPUKind:     compute.ComputeKindPerformanceCPU,
-		Regions:     []compute.Region{compute.Region("ewr")},
-	}
-
 	err = w.RegisterWorkflow(
 		&worker.WorkflowJob{
 			On:          worker.Events("user:create:simple"),
-			Name:        "simple",
+			Name:        "first-workflow",
 			Description: "This runs after an update to the user model.",
 			Concurrency: worker.Expression("input.user_id"),
 			Steps: []*worker.WorkflowStep{
@@ -96,7 +75,7 @@ func run(events chan<- string) (func() error, error) {
 						Message: "Username is: " + input.Username,
 					}, nil
 				},
-				).SetName("step-one").SetCompute(&basicCompute),
+				).SetName("step-one"),
 				worker.Fn(func(ctx worker.HatchetContext) (result *stepOneOutput, err error) {
 					input := &stepOneOutput{}
 					err = ctx.StepOutput("step-one", input)
@@ -111,7 +90,7 @@ func run(events chan<- string) (func() error, error) {
 					return &stepOneOutput{
 						Message: "Above message is: " + input.Message,
 					}, nil
-				}).SetName("step-two").AddParents("step-one").SetCompute(&performanceCompute),
+				}).SetName("step-two").AddParents("step-one"),
 			},
 		},
 	)

@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@hatchet-dev/typescript-sdk':
-        specifier: 0.16.0-alpha.4
-        version: 0.16.0-alpha.4
+        specifier: 1.0.1
+        version: 1.0.1
     devDependencies:
       '@types/node':
         specifier: ^22.8.4
@@ -85,8 +85,8 @@ packages:
     engines: {node: '>=6'}
     hasBin: true
 
-  '@hatchet-dev/typescript-sdk@0.16.0-alpha.4':
-    resolution: {integrity: sha512-iOXpy2ABksAHRVczD48mSAh/oxiR0FhborKmn343l8n6NQV7+F8B2o0kW9zKr6jzr8l4fkVJ/3VHQDlxP2Nzbw==}
+  '@hatchet-dev/typescript-sdk@1.0.1':
+    resolution: {integrity: sha512-+3wcOr3cArbKDGlMJ88UNqDKT627afvVAtoGeKNndl0XZdLM9Z+q22XpCM0dM9krWz1muqOePUpw2IGLYluObA==}
 
   '@humanfs/core@0.19.1':
     resolution: {integrity: sha512-5DyQ4+1JEUzejeK1JGICcideyfUbGixgS9jNgex5nqkW+cY7WZhxBigmieN5Qnw9ZosSNVC9KQKyb+GUaGyKUA==}
@@ -846,7 +846,7 @@ snapshots:
       protobufjs: 7.4.0
       yargs: 17.7.2
 
-  '@hatchet-dev/typescript-sdk@0.16.0-alpha.4':
+  '@hatchet-dev/typescript-sdk@1.0.1':
     dependencies:
       '@bufbuild/protobuf': 2.2.1
       '@types/qs': 6.9.16

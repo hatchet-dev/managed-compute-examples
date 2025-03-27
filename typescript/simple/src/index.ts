@@ -1,58 +1,33 @@
-import Hatchet, { Workflow } from "@hatchet-dev/typescript-sdk";
-import { ManagedWorkerRegion } from "@hatchet-dev/typescript-sdk/clients/rest/generated/cloud/data-contracts";
-import { GPUCompute, SharedCPUCompute } from "@hatchet-dev/typescript-sdk/clients/worker/compute/compute-config";
+import Hatchet from "@hatchet-dev/typescript-sdk";
 
 const hatchet = Hatchet.init();
 
-const oneCpuWorkerConfig: SharedCPUCompute = {
-  cpuKind: 'shared',
-  memoryMb: 1024,
-  numReplicas: 1,
-  cpus: 1,
-  regions: [ManagedWorkerRegion.Ewr],
-};
+const firstWorkflow = hatchet.workflow({
+  name: 'first-workflow',
+})
 
-const twoCpuWorkerConfig: GPUCompute = {
-  cpuKind: 'shared',
-  gpuKind: 'l40s',
-  memoryMb: 1024,
-  numReplicas: 1,
-  cpus: 2,
-  gpus: 1,
-  regions: [ManagedWorkerRegion.Ewr],
-};
-
-const workflow: Workflow = {
-  id: 'simple-workflow',
-  description: 'test',
-  on: {
-    event: 'user:create',
+const firstWorkflowStep = firstWorkflow.task({
+  name: 'first-workflow-step',
+  fn: async (ctx) => {
+    console.log('executed first-workflow-step!');
+    return { firstWorkflowStep: 'first-workflow-step results!' };
   },
-  steps: [
-    {
-      name: 'step1',
-      compute: oneCpuWorkerConfig,
-      run: async (ctx) => {
-        console.log('executed step1!');
-        return { step1: 'step1 results!' };
-      },
-    },
-    {
-      name: 'step2',
-      parents: ['step1'],
-      compute: twoCpuWorkerConfig,
-      run: (ctx) => {
-        console.log('executed step2 after step1 returned ', ctx.stepOutput('step1'));
-        return { step2: 'step2 results!' };
-      },
-    },
-  ],
-};
+});
+
+firstWorkflow.task({
+  name: 'second-workflow-step',
+  parents: [firstWorkflowStep],
+  fn: async (ctx) => {
+    console.log('executed second-workflow-step!');
+    return { secondWorkflowStep: 'second-workflow-step results!' };
+  },
+});
 
 async function main() {
-  const worker = await hatchet.worker('managed-worker');
-  await worker.registerWorkflow(workflow);
-  worker.start();
+  const worker = await hatchet.worker('managed-worker', {
+    workflows: [firstWorkflow],
+  });
+  await worker.start();
 }
 
 main();

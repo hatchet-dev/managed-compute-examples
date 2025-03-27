@@ -3,7 +3,6 @@ import time
 from dotenv import load_dotenv
 
 from hatchet_sdk import Context, Hatchet
-from hatchet_sdk.compute.configs import Compute
 
 load_dotenv()
 
@@ -11,14 +10,10 @@ hatchet = Hatchet()
 
 # Default compute
 
-default_compute = Compute(cpu_kind="shared", cpus=2, memory_mb=1024, num_replicas=2, regions=["ewr"])
-basic = Compute(cpu_kind="shared", cpus=1, memory_mb=1024, num_replicas=1, regions=["ewr"])
 
-
-
-@hatchet.workflow(on_events=["user:create"])
+@hatchet.workflow(name="first-workflow")
 class ManagedWorkflow:
-    @hatchet.step(timeout="11s", retries=3, compute=default_compute)
+    @hatchet.step(timeout="11s", retries=3)
     def step1(self, context: Context):
         print("executed step1")
         time.sleep(10)
@@ -27,7 +22,7 @@ class ManagedWorkflow:
             "step1": "step1",
         }
     
-    @hatchet.step(timeout="11s", retries=3, compute=basic)
+    @hatchet.step(timeout="11s", retries=3)
     def step2(self, context: Context):
         print("executed step2")
         time.sleep(10)
